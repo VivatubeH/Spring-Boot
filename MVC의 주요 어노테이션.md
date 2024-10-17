@@ -25,7 +25,7 @@ Spring MVC의 주요 어노테이션
       * @RequestMapping(path = "/")    혹은 @RequestMapping("/")
       * @RequestMapping(path = {"/info", "/detail"})    혹은 @RequestMapping({"/info", "/detail"})
     - method
-      * 매핑되는 요청 방식이다.
+      * 매핑되는 요청 방식이다. 지정하지 않으면 요청방식은 상관하지 않는다.
       * @RequestMapping(method = RequestMethod.GET)
       * GET, POST, PUT, DELETE 등을 지정할 수 있다.  
   + 사용예)
@@ -44,3 +44,64 @@ Spring MVC의 주요 어노테이션
         }
       }
       ```
+
+      ```java
+      // 주로 사용하는 방식
+      @Controller
+      @RequestMapping("/emp") // 클래스 레벨
+      public class EmployeeController {
+
+        @GetMapping("/list") // 메소드 레벨
+        public String employees() {
+
+        }
+
+        @GetMapping("/detail")
+        public String employee() {
+
+        }
+
+        @PostMapping("/add")
+        public String register() {
+
+        }
+      }
+      ```
+      
+### @RequestParam
+  + 요청파라미터값을 매핑하는 어노테이션이다.
+  + @RequestParam 없이 요청파라미터값을 요청핸들러 메소드의 매개변수에 매핑할 수 있지만,
+    - 해당 요청파라미터값은 무조건 필수 요청파라미터 값이 된다.
+    - 매개변수의 이름과 동일한 이름의 요청파라미터 값이 매핑된다.
+  + 주요 속성
+      * name
+          - 요청 파라미터의 이름을 지정한다.
+      * required
+          - 필수 요청파라미터인지 여부를 지정한다. 기본값은 true다.
+          - 필수 요청파라미터 값이 아닌 경우에는 false로 설정한다.
+      * defaultValue
+          - 필수 요청파라미터값이 아닌 경우 요청파라미터 값이 없을 때 사용되는 기본값을 지정한다.
+          - 문자열 형식으로 지정한다. ( 어차피 문자열 형식으로 지정해도 타입을 적절히 변환해줌. )
+  + 사용예
+
+  ```java
+  @PostMapping("/login")
+  public String login(@RequestParam("id") String id,  // request.getParameter("id")로 조회되는 값을 전달
+                      @RequestParam("pwd") String pwd) {// request.getParameter("pwd")로 조회되는 값을 전달
+  }
+
+  /*
+    요청 URL
+      http://localhost/emp/list
+      http://localhost/emp/list?page=2
+      http://localhost/emp/list?page=2&sort=급여
+  */
+
+  
+  // 올 수도 안 올수도 있는 값은 RequestParam을 반드시 사용하고, required = false, defaultValue 지정이 필요.
+  // null이 들어갈 수 없는 곳에는 defaultValue를 생략할 수 없다.
+  @GetMapping("/list")
+  public String employees(@RequestParam(name = "page", required = false, defaultValue = "1") int page,  
+                          @RequestParam(name = "sort", required = false, defaultValue = "name") String sort) {  
+
+  }
