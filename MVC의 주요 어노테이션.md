@@ -84,24 +84,25 @@ Spring MVC의 주요 어노테이션
           - 문자열 형식으로 지정한다. ( 어차피 문자열 형식으로 지정해도 타입을 적절히 변환해줌. )
   + 사용예
 
-  ```java
-  @PostMapping("/login")
-  public String login(@RequestParam("id") String id,  // request.getParameter("id")로 조회되는 값을 전달
-                      @RequestParam("pwd") String pwd) {// request.getParameter("pwd")로 조회되는 값을 전달
-  }
-
-  /*
-    요청 URL
-      http://localhost/emp/list
-      http://localhost/emp/list?page=2
-      http://localhost/emp/list?page=2&sort=급여
-  */
-
-  
-  // 올 수도 안 올수도 있는 값은 RequestParam을 반드시 사용하고, required = false, defaultValue 지정이 필요.
-  // null이 들어갈 수 없는 곳에는 defaultValue를 생략할 수 없다.
-  @GetMapping("/list")
-  public String employees(@RequestParam(name = "page", required = false, defaultValue = "1") int page,  
-                          @RequestParam(name = "sort", required = false, defaultValue = "name") String sort) {  
-
-  }
+      ```java
+      @PostMapping("/login")
+      public String login(@RequestParam("id") String id,  // request.getParameter("id")로 조회되는 값을 전달
+                          @RequestParam("pwd") String pwd) {// request.getParameter("pwd")로 조회되는 값을 전달
+      }
+    
+      /*
+        요청 URL
+          http://localhost/emp/list
+          http://localhost/emp/list?page=2
+          http://localhost/emp/list?page=2&sort=급여
+      */
+    
+      
+      // 올 수도 안 올수도 있는 값은 RequestParam을 반드시 사용하고, required = false, defaultValue 지정이 필요.
+      // null이 들어갈 수 없는 곳에는 defaultValue를 생략할 수 없다.
+      @GetMapping("/list")
+      public String employees(@RequestParam(name = "page", required = false, defaultValue = "1") int page,  
+                              @RequestParam(name = "sort", required = false, defaultValue = "name") String sort) {  
+    
+      }
+      ```
