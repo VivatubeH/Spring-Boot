@@ -55,6 +55,31 @@ Spring mvc의 구성요소
         * 유효성 검증이 완료된 값을 서비스에 전달해서 업무로직을 실행시킨다.
         * 업무로직 수행결과 획득된 정보를 Model 객체에 담아서 뷰에 전달되게 한다.
         * 정보를 표현할 뷰이름(JSP 페이지의 경로 및 파일명)을 반환한다.
-- View
+     
+![image](https://github.com/user-attachments/assets/b7bed9c7-d5a1-48cb-9d80-59bd63a1b279)
 
+- Model
+    + **View에 전달할 데이터**
+    + Model에 저장된 값은 나중에 요청객체의 속성으로 다시 옮겨진다.
+        * JSP를 실행시켜서 HTML 컨텐츠 응답을 보내는 JstlView가 Model의 값을 옮긴다.
+- View
+    + 최종 응답컨텐츠를 생성해서 클라이언트에 응답으로 보낸다.
+    + Model을 전달받아서 **특정 컨텐츠타입의 응답으로 변환하는 객체**다.
+      
+- ModelAndView
+    + ModelAndView는 뷰에 전달할 데이터(Model)와 데이터를 특정 컨텐츠타입으로 변환하는 객체(View)가 저장되는 객체다.
+    + 컨트롤러의 요청핸들러 메소드를 실행하는 HandlerAdapter가 DispatcherServlet에게 최종적으로 반환하는 객체다.
+      
 - ViewResolver
+    + 뷰이름을 분석해서 적절한 View 객체를 제공하는 객체다.
+    + DispatcherServlet이 ModelAndView 내에 View 객체가 없으면(뷰이름만 있으면) 실행한다.
+    + JSP를 뷰 템플릿으로 사용하는 웹 애플리케이션에서는 HandlerAdapter가 반환하는 ModelAndView에는 언제나 뷰 객체 대신에
+      뷰 이름이 저장되어 있다.
+      * JSP를 뷰 템플릿으로 사용하는 웹 애플리케이션은 InternalResourceViewResolver가 기본 뷰리졸브다.
+      * 뷰이름이 "home", "emp/list"처럼 생겼을 때 뷰이름이 JSP 페이지의 경로 및 파일이름이다.
+      * 뷰이름이 "redirect:/", "redirect:/list"처럼 생겼을 때 뷰이름이 재요청할 URL이다.
+    + JstlView와 RedirectView
+      * JSP 기반의 웹 애플리케이션에서 사용되는 기본 View 객체다.
+      * JstlView는 최초 요청을 JSP 페이지로 내부이동시켜서 JSP를 실행시키고, HTML 컨텐츠가 응답으로 보내지게 한다.
+      * RedirectView는 클라이언트에게 재요청 URL을 응답으로 보낸다.
+#### 투비소프트 Nexacro 교육 시간될 때 들어보는 게 좋음. [ 회사에서 많이 활용함 ]
