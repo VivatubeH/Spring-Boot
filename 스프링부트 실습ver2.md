@@ -10,6 +10,7 @@ YAML 파일
 - Configuration 파일을 작성할 때 사용되는 마크업이다.
 - 확장자는 .yaml과 .yml 모두 가능하다.
 - 기존의 xml, json, propertie 형식으로 설정 정보를 작성했던 것을 yaml로 대체하는 추세다.
+- properties로 쓰거나 yaml로 쓰거나는 자유임. 선택할 수 있다.
 - 대표적인 사용예
   + docker composer
   + kubernates
