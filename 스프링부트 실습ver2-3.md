@@ -126,6 +126,7 @@ com.example.demo.mapper.ProductMapper 클래스
 package com.example.demo.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -135,13 +136,185 @@ import com.example.demo.vo.Product;
 @Mapper
 public interface ProductMapper {
 
-	List<Product> getProducts();
+	List<Product> getProducts(@Param("condition") Map<String, Object> condition);
 	Product getProductByNo(@Param("no") int no);
 }
 
 ```
 
-product/list.jsp 파일
+ProductController 클래스
+--------------------------
+```java
+package com.example.demo.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.demo.service.ProductService;
+import com.example.demo.vo.Product;
+
+@Controller
+@RequestMapping("/product")
+public class ProductController {
+
+	@Autowired
+	private ProductService productService;
+	
+	@GetMapping("/list")
+	public String list(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+					   @RequestParam(name = "rows", required = false, defaultValue = "10") int rows,
+					   @RequestParam(name = "opt", required = false) String opt,
+					   @RequestParam(name = "value", required = false) String value,
+					   Model model) {
+		
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("page", page);
+		condition.put("rows", rows);
+		if(StringUtils.hasText(value)) { // null이 아니고 값이 있는 경우에만
+			condition.put("opt", opt);
+			condition.put("value", value);
+		}
+		
+		List<Product> products = productService.getAllProducts(condition);
+		model.addAttribute("products", products);
+		
+		return "product/list";
+	}
+	
+	@GetMapping("/detail")
+	public String detail() {
+		
+		return "product/detail";
+	}
+}
+```
+
+WebController 클래스
+-----------------------------------------------
+```java
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class WebController {
+
+	@GetMapping("/")
+	public String home() {
+		return "home";
+	}
+}
+```
+
+ProductService 클래스
+--------------------------------------------
+```java
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.mapper.CategoryMapper;
+import com.example.demo.mapper.ProductMapper;
+import com.example.demo.vo.Product;
+
+@Service
+public class ProductService {
+
+	@Autowired
+	private ProductMapper productMapper;
+	
+	@Autowired
+	private CategoryMapper categoryMapper;
+	
+	/**
+	 * 모든 상품정보 목록을 제공하는 서비스 메소드다.
+	 * @param condition 조회조건이 포함된 Map 객체다.
+	 * @return 모든 상품 목록
+	 */
+	public List<Product> getAllProducts(Map<String, Object> condition) {
+		List<Product> products = productMapper.getProducts(condition);
+		return products;
+	}
+	
+	
+}
+
+```
+
+CategoryMapper.xml
+----------------------------
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.CategoryMapper"></mapper>
+```
+
+ProductMapper.xml
+-----------------------------
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.ProductMapper">
+	<!-- 
+		List<Product> getProducts();
+	-->
+	<select id="getProducts" resultType="Product">
+		select 
+			P.product_no 				as no
+			, P.product_name 			as name
+			, P.product_price 			as price
+			, P.product_discount_price 	as discountPrice
+			, C.category_no				as "category.no"
+			, C.category_name			as "category.name"
+		from
+			mall_products P, mall_categories C
+		where
+			P.category_no = C.category_no
+			<if test="condition.opt != null">
+				<choose>
+					<when test="condition.opt == 'name'">
+						and P.product_name like '%' || #{condition.value} || '%'
+					</when>
+					<when test="condition.opt == 'maker'">
+						and P.product_maker like '%' || #{condition.value} || '%'
+					</when>
+					<when test="condition.opt == 'minPrice'">
+						and P.product_price &gt;= #{condition.value}
+					</when>
+					<!-- 여는 태그 <는 xml 문서내에서 사용 못함.. -->
+					<when test="condition.opt == 'maxPrice'"> 
+						and P.product_price &lt;= #{condition.value}
+					</when>
+				</choose>
+			</if>
+		order by
+			P.product_no desc
+	</select>
+	
+	<!-- 
+		Product getProductByNo(@Param("no") int no);
+	-->
+	<select id="getProductByNo" resultType="Product">
+	
+	</select>
+</mapper>
+```
+
+product/list.jsp 파일 [ 페이징을 할 때는 페이징에 영향을 미치는 값들을 무조건 전달해야 함 ] 
 ------------------------------
 ```jsp
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -171,6 +344,27 @@ product/list.jsp 파일
 			</div>
 		</div>
 		<div class="row mb-3">
+			<div class="col-12">
+				<form>
+		  			<div class="row g-3">
+		  				<div class="col-2 offset-5">
+		  					<select class="form-control">
+		  						<option>제목</option>
+		  						<option>제목</option>
+		  						<option>제목</option>
+		  					</select>
+		  				</div>
+		  				<div class="col-4">
+		  					<input type="text" class="form-control">
+		  				</div>
+		  				<div class="col-1">
+		  					<button class="btn btn-outline-primary">검색</button>
+		  				</div>
+		  			</div>
+				</form>
+			</div>
+		</div>
+		<div class="row mb-3">
 			<div class="col">
 				<div class="border p-2 bg-light">
 					<table class="table">
@@ -191,17 +385,24 @@ product/list.jsp 파일
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach var="product" items="${products }">
+						<%--
+							varStatus 속성
+								+ 객체를 담는 변수명을 지정한다.
+								+ <c:forEach >태그의 현재 반복상태 정보를 표현하는 객체가 전달된다.
+								+ <c:forEach var="p" items="${products }" varStatus="x">
+									${x.index } 	0부터 시작하는 인덱스가 표시된다.
+									${x.count }		1부터 시작하는 순번이 표시된다.
+									${x.first }		첫번째 값이면 true가 반환된다.
+									${x.last }		마지막번째 값이면 true가 반환된다.
+									 
+						 --%>
+						<c:forEach var="p" items="${products }" varStatus="loop">
 							<tr>
-								<td>${product.no }</td>
-								<td>${product.category.name }</td>
-								<td><a class="text-decoration-none" href="detail?no=10">${product.name }</a></td>
-								<td class="text-end">
-									<fmt:formatNumber value="${product.price }"/> 원
-								</td>
-								<td class="text-end">
-									<fmt:formatNumber value="${product.discountPrice }"/> 원
-								</td>
+								<td>${loop.count }</td>
+								<td>${p.category.name }</td>
+								<td><a class="text-decoration-none" href="detail?no=10">${p.name }</a></td>
+								<td class="text-end"><fmt:formatNumber value="${p.price }"/> 원</td>
+								<td class="text-end"><span class="text-danger"><fmt:formatNumber value="${p.discountPrice }"/></span> 원</td>
 							</tr>
 						</c:forEach>
 						</tbody>
@@ -209,6 +410,31 @@ product/list.jsp 파일
 				</div>
 			</div>
 		</div>
+		
+		<div class="row mb-3">
+			<div class="col-12">
+				<nav>
+					<ul class="pagination justify-content-center">
+					    <li class="page-item">
+					    	<a class="page-link" href="#">이전</a>
+					    </li>
+					    <li class="page-item">
+					    	<a class="page-link" href="#">1</a>
+					    </li>
+					    <li class="page-item">
+					    	<a class="page-link" href="#">2</a>
+					    </li>
+					    <li class="page-item">
+					    	<a class="page-link" href="#">3</a>
+					    </li>
+					    <li class="page-item">
+					    	<a class="page-link" href="#">다음</a>
+					    </li>
+				  	</ul>
+				</nav>
+			</div>
+		</div>
+		
 	</div>
 </main>
 
