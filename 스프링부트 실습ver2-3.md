@@ -219,3 +219,22 @@ product/list.jsp 파일
 </body>
 </html>
 ```
+
+### Model에 담으면 EL로 꺼낼 수 있음. [ 과정은 몰라도 됨 ]
+
+임의로 순번을 부여해서 뽑고 싶을 때 [ VarStatus 속성을 사용한다. ]
+---------------------------------
+```java
+<c:forEach var="p" items="${products }" varStatus="loop">
+<tr>
+<td>${loop.count }</td>
+
+// varStatus 속성
+	+ 객체를 담는 변수명을 지정한다.
+	+ <c:forEach >태그의 현재 반복상태를 표현하는 객체가 전달된다.
+	+ <c:forEach var="p" items="${products }" varStatus="x">
+		${x.index } 0부터 시작하는 인덱스가 표시된다.
+		${x.count } 1부터 시작하는 순번이 표시된다.
+		${x.first } 첫 번째 값이면 true가 반환된다.
+		${x.last } 마지막 값이면 true가 반환된다.
+```
