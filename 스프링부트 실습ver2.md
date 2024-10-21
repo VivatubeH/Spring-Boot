@@ -124,7 +124,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
 ```
 
-pom.xml 설정파일
+pom.xml 설정파일 [ Security가 없는 기본적인 웹 애플리케이션 ]
 ----------------------------------------------
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -263,3 +263,11 @@ pom.xml 설정파일
 
 </project>
 ```
+
+![image](https://github.com/user-attachments/assets/ed20b7f3-d1a6-4959-ab41-498ad99add76)
+
+mybatis의 mappers 폴더 생성. [ 모든 매퍼파일을 둘 폴더 ]
+
+![image](https://github.com/user-attachments/assets/c115bfc4-fc9c-4476-95c6-a5c5656edd03)
+
+src/main/webapp/WEB-INF/views 폴더 하위에 home.jsp 파일 생성하기
