@@ -90,3 +90,176 @@ book:
       - 강감찬
       - 이순신
   ```
+
+application.yml 설정파일
+-----------------------------------
+
+```yml
+### 톰캣서버의 포트번호를 정의한다.
+server:
+  port: 80
+
+spring:
+### 애플리케이션 이름을 정의한다.
+  application:
+    name: store
+### 데이터베이스 연결정보를 정의한다.
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: hta
+    password: zxcv1234
+### spring mvc 설정
+  mvc:            # JSP 뷰페이지 경로 및 확장자를 정의한다.
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+### mybatis 설정
+mybatis:
+  mapper-locations: # 매퍼파일 저장경로를 정의한다.
+    - mybatis/mappers/*.xml
+  configuration:    # 기타 설정정보를 정의한다.
+    jdbc-type-for-null: NULL
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+```
+
+pom.xml 설정파일
+----------------------------------------------
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.example</groupId>
+	<artifactId>store</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>store</name>
+	<description>Demo project for Spring Boot</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+        <!--
+         객체의 값을 다른 객체에 복사해주는 modelmapper 의존성 추가
+      	-->
+      	<dependency>
+	         <groupId>org.modelmapper</groupId>
+	         <artifactId>modelmapper</artifactId>
+	         <version>3.2.1</version>
+      	</dependency>
+		    <!--
+         JSP 실행을 지원하는 내장형 톰캣 의존성 추가
+      	-->
+      	<dependency>
+          	<groupId>org.apache.tomcat.embed</groupId>
+          	<artifactId>tomcat-embed-jasper</artifactId>
+      	</dependency>
+      	<!--
+         	서블릿 API 의존성 추가
+      	-->
+      	<dependency>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
+      	</dependency>
+      
+      	<!--
+         JSTL 의존성 추가
+      	-->
+     	 <dependency>
+          <groupId>org.glassfish.web</groupId>
+          <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+      	</dependency>
+      	<dependency>
+          <groupId>jakarta.servlet.jsp.jstl</groupId>
+          <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+      	</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc11</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter-test</artifactId>
+			<version>3.0.3</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+```
