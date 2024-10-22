@@ -200,6 +200,8 @@ public class SampleTest {
 #### JUnit Test 하기 [ src/test/java 폴더의 패키지에 저장할 자바 코드 ]
 #### 실행은 우클릭 -> run as -> JUnit [ 좌측에 초록색 막대가 뜨면 테스트 성공! ]
 
+##### JUnit 참고 사이트 : https://donghyeon.dev/junit/2021/04/11/JUnit5-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C/
+
 ``` java
 package com.example.demo;
 
@@ -240,3 +242,7 @@ class PaginationTests {
 }
 
 ```
+
+#### JUnit에서 Errors : 실행 시 오류가 발생한 것. [ 테스트가 실행이 안 된 것 ]
+#### JUnit에서 Failures : 예상한 결과가 다른 결과가 나온 것. [ 개발자의 코딩 실수나 테스트 케이스 결과에 대한 예측 실패 ] 
+
