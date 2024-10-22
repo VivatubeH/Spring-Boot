@@ -1,8 +1,8 @@
+### 아래 그림은 참고용이고, 실제 데이터와는 다름.
+
 ![image](https://github.com/user-attachments/assets/791bb5d1-15b5-48f1-8272-76f0f7a0e6e1)
 
 ### 페이지 네이션에 기본적으로 들어갈 데이터
-
-
 
 ![image](https://github.com/user-attachments/assets/a5a97191-2ba9-4fea-9023-53a443b030cc)
 
