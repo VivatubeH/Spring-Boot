@@ -123,9 +123,84 @@
    	    + 테스트 결과를 출력할 때 테스트 메소드 이름 대신 DisplayName에서 작성한 내용이 출력된다.
    	  - @Timeout
    	    + 지정된 시간내에 테스트가 완료되지 않으면 실패로 판정한다.
+
+* JUnit5의 주요 Assertions
+  + JUnit5는 테스트 결과를 검증하기 위한 다양한 메소드를 제공한다.
+  + 아래의 메소드는 전부 Assertions의 정적 메소드다.
+    - assertEquals(expected, actual) : 두 값이 일치하는 지 확인한다.
+    - assertNotEquals(expected, actual) : 두 값이 일치하지 않는지 확인한다.
+    - assertTrue(condition) : 조건이 참인지 확인한다.
+    - assertFalse(condition) : 조건이 거짓인지 확인한다.
+    - assertNull(object) : 객체가 null인지 확인한다.
+    - assertNotNull(object) : 객체가 null이 아닌지 확인한다.
+    - assertThrows(expectedType, executable) : 특정 실행에서 예상했던 예외가 발생하는지 확인한다.
+
+ - 스프링부트의 단위테스트
+   + spring boot는 JUnit5, Mockito 등의 도구(프레임워크)를 통해서 쉽게 단위테스트를 작성할 수 있도록 지원한다.
+   + spring boot에서는 컨트롤러, 서비스, 데이터베이스, 영속화와 같은 각 계층에 맞는 단위테스트 케이스를 작성하고 테스트할 수 있다.
+   + spring boot의 테스트 starter 의존성
+```spring
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-test</artifactId>
+	<scope>test</scope>
+</dependency>
+```
+* 이 의존성은 spring boot 애플리케이션에 기본으로 포함되는 의존성이다.
+* 이 의존성은 JUnit5, Mockito, AssertJ등 다양한 테스트 라이브러리를 제공한다.
+
++ spring boot 애플리케이션에서 단위테스트 작성하기
+  * spring boot 애플리케이션에서는 단위테스트를 2가지로 구분해서 작성할 수 있다.
+  * spring 컨테이너가 필요없는 단위테스트와 spring 컨테이너에 의존적인 단위테스트가 있다.
+
+  * spring 컨테이너가 필요없는 단위 테스트
+  ```java
+    public class SampleTest {
+      @Test
+      public void testSomething() {
+         ...
+      }
+    }
+  ```
+  * spring 컨테이너에 의존적인 단위 테스트
+  ```java
+  // 전체 애플리케이션의 모든 객체를 생성하고 조립하는 스프링 컨테이너가 생성된다.
+  // @Autowired를 사용해서 테스트가 필요한 객체를 주입받을 수 있다.
+  @SpringBootTest
+  public class SampleTest {
+    // 테스트 대상이 되는 기능이 구현된 객체를 주입받는다.
+    @Autowired
+    SomeService someService;
+
+    @Test
+    public void testSomething() {
+       ...
+    }
+  }
+  ```
+- 테스트 클래스와 메소드 작성하기
+  * 테스트 작성하기
+
+```java
+
+public class SampleTest {
+
+	@Test
+	public void testPlus() {
+		int num1 = 2;
+		int num2 = 3;
+		int result = num1 + num2;
+
+		// assertEquals(expected, actual)
+		assertEquals(5, result);
+	}
+}
+
+```
 #### JUnit Test 하기 [ src/test/java 폴더의 패키지에 저장할 자바 코드 ]
 #### 실행은 우클릭 -> run as -> JUnit [ 좌측에 초록색 막대가 뜨면 테스트 성공! ]
-```java
+
+``` java
 package com.example.demo;
 
 import static org.assertj.core.api.Assertions.assertThat;
