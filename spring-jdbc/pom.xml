@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
+  	<groupId>kr.co.jhta</groupId>
+  	<artifactId>spring-jdbc</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  
+	  <properties>
+	  	<maven.compiler.source>21</maven.compiler.source>
+	    <maven.compiler.target>21</maven.compiler.target>
+	  </properties>
+	  
+	  <dependencies>
+	  	<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11 -->
+	  	<!-- oracle jdbc Driver -->
+		<dependency>
+		    <groupId>com.oracle.database.jdbc</groupId>
+		    <artifactId>ojdbc11</artifactId>
+		    <version>23.5.0.24.07</version>
+		</dependency>
+
+	  	<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+	  	<!-- 객체 생성, 의존성 주입, AOP 처리 등을 지원하는 스프링 컨테이너를 제공하는 라이브러리 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		    <version>6.1.13</version>
+		</dependency>
+		<!-- jdbc 기술을 이용한 데이터베이스 엑세스를 지원하는 라이브러리 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-jdbc</artifactId>
+		    <version>6.1.13</version>
+		</dependency>
+		<!-- 트랜잭션 처리를 지원하는 라이브러리 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-tx</artifactId>
+		    <version>6.1.13</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<!-- 로그 출력을 지원하는 라이브러리 -->
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-core</artifactId>
+		    <version>2.24.0</version>
+		</dependency>
+		   <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+	   <!-- AOP 구현에 필요한 API를 제공하는 라이브러리 -->
+	   <dependency>
+	       <groupId>org.springframework</groupId>
+	       <artifactId>spring-aop</artifactId>
+	       <version>6.1.13</version>
+	   </dependency>
+	   <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+	   <!-- AOP 전용의 라이브러리(Spring aop에서 이 라이브러리를 사용한다.)-->
+	   <dependency>
+	       <groupId>org.aspectj</groupId>
+	       <artifactId>aspectjweaver</artifactId>
+	       <version>1.9.22.1</version>
+	   </dependency>
+	   <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+	   <dependency>
+	       <groupId>org.aspectj</groupId>
+	       <artifactId>aspectjrt</artifactId>
+	       <version>1.9.22.1</version>
+	   </dependency>
+
+  </dependencies>
+</project>

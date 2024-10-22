@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:context="http://www.springframework.org/schema/context"
+      xmlns:aop="http://www.springframework.org/schema/aop"
+      xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+      https://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context
+      https://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/aop 
+      https://www.springframework.org/schema/aop/spring-aop.xsd
+      http://mybatis.org/schema/mybatis-spring 
+      http://mybatis.org/schema/mybatis-spring.xsd">
+
+   <!-- 커넥션 풀 객체를 스프링 빈으로 등록시키기 -->
+   <bean id="cp" 
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+      <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+      <property name="username" value="hta" />
+      <property name="password" value="zxcv1234" />
+   </bean>
+   
+   <!-- mybatis 핵심 객체를 스프링 빈으로 등록시키기 -->
+   <bean id="sqlSessionFactory" 
+      class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="cp" />
+        <property name="mapperLocations" value="classpath:/mybatis/mappers/*.xml" />
+   </bean>
+   
+   <!-- 매퍼 인터페이스를 스캔해서 구현객체를 생성하고 스프링의 빈으로 등록시키기  
+   		+ MapperScannerConfigurer 객체를 스프링의 빈으로 등록시킨다.
+   		+ MapperScannerConfigurer은 지정된 패키지에서 매퍼 인터페이스를 전부 스캔한다.
+   		+ MapperScannerConfigurer은 매퍼 인터페이스를 구현한 매퍼 인스턴스(구현객체)를 생성하고
+   		스프링의 빈으로 등록시킨다. 즉, 스프링 컨테이너 안에는 JobMapper 타입의 구현객체가 등록되어 있다.		
+   -->
+   <mybatis:scan base-package="kr.co.jhta.mapper" />
+   
+</beans>
+
+

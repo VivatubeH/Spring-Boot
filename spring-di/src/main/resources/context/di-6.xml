@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+      https://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context
+      https://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!--
+		컴포넌트를 스캔해서 자동으로 스프링 컨테이너의 빈으로 등록시키기
+			1. 등록대상이 되는 클래스에 스테레오 타입 어노테이션을 부착한다.
+			@Service
+			public class UserService {
+				...
+			}
+			@Repository
+			public class UserDao {
+				...
+			}
+			
+			2. 스프링 빈 설정파일에서 스캔 대상이 되는 패키지를 지정하고,
+			   스캔전략을 정의한다.
+			   
+			   <context:component-scan base-package="패키지경로">
+			   
+	-->
+	<context:component-scan base-package="di_6.exam" />
+</beans>

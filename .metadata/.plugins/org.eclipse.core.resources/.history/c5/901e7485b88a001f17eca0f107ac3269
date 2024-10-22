@@ -1,0 +1,15 @@
+package kr.co.jhta.vo;
+
+import java.util.Date;
+
+public class Product {
+
+	private int no;
+	private String name;
+	private Company maker;
+	private int price;
+	private double discountRate;
+	private int stock;
+	private boolean soldOut;
+	private Date createdDate;
+}

@@ -1,0 +1,23 @@
+package com.example.demo.dto;
+
+import java.util.List;
+
+import com.example.demo.util.Pagination;
+
+public class ListDto<T> { // 화면에 표시할 때는 데이터와 페이징 2개가 필요하다.
+	List<T> data;
+	Pagination paging;
+	
+	public ListDto(List<T> data, Pagination paging) {
+		this.data = data;
+		this.paging = paging;
+	}
+	
+	public List<T> getData() {
+		return data;
+	}
+	
+	public Pagination getPaging() {
+		return paging;
+	}
+}

@@ -1,0 +1,20 @@
+package com.example.demo.web.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+	/*
+	 * 요청URL
+	 * 	http://localhost 혹은 http://localhost/
+	 * 요청파라미터
+	 * 	없음
+	 * 
+	 */
+	@GetMapping("/")
+	public String home() {
+		return "home";
+	}
+}

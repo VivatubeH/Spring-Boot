@@ -1,0 +1,5 @@
+spring.application.name=spring-web
+
+# properties의 형태는 name = value
+# 내장 톰캣서버의 port 번호를 지정한다.
+spring.port = 80

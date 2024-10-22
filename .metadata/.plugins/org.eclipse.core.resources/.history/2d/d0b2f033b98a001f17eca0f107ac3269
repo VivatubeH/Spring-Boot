@@ -1,0 +1,23 @@
+package kr.co.jhta.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.co.jhta.vo.Product;
+import model2.controller.Controller;
+
+public class ProductListController implements Controller {
+
+	@Override
+	public String exe(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		System.out.println("### 상품목록컨트롤러: exe(req, res) 실행됨");
+		
+		List<Product> productList = new ArrayList<>(); 
+		
+		System.out.println("### 상품목록컨트롤러: exe(req, res) 종료됨");
+		
+		return "product/list.jsp";
+	}
+}

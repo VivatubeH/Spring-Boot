@@ -1,0 +1,12 @@
+package jdbc;
+
+import jdbc.vo.Employee;
+import jdbc.vo.Employee.EmployeeBuilder;
+
+public class App2 {
+
+	public static void main(String[] args) {
+		
+		EmployeeBuilder builder = Employee.builder();
+	}
+}

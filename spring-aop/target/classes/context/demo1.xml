@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+      https://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context
+      https://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/aop 
+      https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+   <!--
+		<context:component-scan />
+			지정된 패키지에서 스프링 컨테이너에 등록될 준비가 끝난 클래스를 스캔해서
+			스프링 빈으로 등록시키는 객체를 스프링 컨테이너의 빈으로 등록한다.
+			 
+   -->
+   <context:component-scan base-package="aop.demo1" />
+   
+   <!--
+		<aop:aspectj-autoproxy />
+			AutoProxyCreator를 스프링 컨테이너의 빈으로 등록시킨다.
+			
+			AutoProxyCreator
+				- 스프링 컨테이너에 등록된 빈의 AOP 관련 어노테이션을 분석해서
+				  AOP 관련 작업을 처리하는 객체다.
+   -->
+   <aop:aspectj-autoproxy />
+   
+</beans>

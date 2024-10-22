@@ -1,0 +1,26 @@
+package kr.co.jhta.controller;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model2.controller.Controller;
+
+/*
+ * 요청 URL: http://localhost/model2/home.do
+ * 	+ 위의 요청 URL이 프론트컨트롤러에 접수되면 이 컨트롤러를 실행한다.
+ *  + 요청을 처리하고 나면 home.jsp로 내부이동시켜서 home.jsp를 실행시킨다.
+ *  + home.jsp가 최종 응답을 클라이언트로 보낸다.
+ */
+public class HomeController implements Controller {
+
+	@Override
+	public String exe(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("### 홈컨트롤러: exe(req, res) 실행됨");
+
+		System.out.println("### 홈컨트롤러: 요청을 처리함");
+		req.setAttribute("msg", "안녕하세요");
+		System.out.println("### 홈컨트롤러: exe(req, res) 종료됨");
+		
+		return "home.jsp";
+	}
+}
