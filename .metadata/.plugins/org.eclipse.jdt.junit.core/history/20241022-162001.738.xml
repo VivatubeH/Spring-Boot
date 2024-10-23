@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="ProductMapperTest" project="store" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="com.example.demo.mapper.ProductMapperTest" time="1.308" displayname="ProductMapperTest" uniqueid="[engine:junit-jupiter]/[class:com.example.demo.mapper.ProductMapperTest]">
-    <testcase name="testBean" classname="com.example.demo.mapper.ProductMapperTest" time="0.77" displayname="ProductMapper인터페이스 구현체를 잘 주입받았는지 테스트" uniqueid="[engine:junit-jupiter]/[class:com.example.demo.mapper.ProductMapperTest]/[method:testBean()]"/>
-    <testcase name="testGetTotalRows" classname="com.example.demo.mapper.ProductMapperTest" time="0.537" displayname="조회조건에 맞게 데이터 갯수를 잘 조회하는지 테스트" uniqueid="[engine:junit-jupiter]/[class:com.example.demo.mapper.ProductMapperTest]/[method:testGetTotalRows()]"/>
-  </testsuite>
-</testrun>

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="ProductMapperTest" project="store" tests="1" started="1" failures="0" errors="0" ignored="0">
-  <testsuite name="com.example.demo.mapper.ProductMapperTest" time="0.76" displayname="ProductMapperTest" uniqueid="[engine:junit-jupiter]/[class:com.example.demo.mapper.ProductMapperTest]">
-    <testcase name="testBean" classname="com.example.demo.mapper.ProductMapperTest" time="0.76" displayname="ProductMapper인터페이스 구현체를 잘 주입받았는지 테스트" uniqueid="[engine:junit-jupiter]/[class:com.example.demo.mapper.ProductMapperTest]/[method:testBean()]"/>
-  </testsuite>
-</testrun>

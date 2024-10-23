@@ -1,9 +1,0 @@
-package com.example.demo.dto;
-
-import com.example.demo.util.Pagination;
-
-public class ListDto<T> {
-
-	T data;
-	Pagination pagination;
-}

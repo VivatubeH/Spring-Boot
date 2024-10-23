@@ -1,4 +1,0 @@
-# 애플리케이션의 이름을 정의한다.
-spring:
-  application:
-	name: store

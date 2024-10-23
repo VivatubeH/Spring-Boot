@@ -1,8 +1,0 @@
-server:
-  port: 80			# tomcat port 번호를 정의한다.
-  
-spring:
-  application:
-	name: store		# 애플리케이션의 이름을 정의한다.
-  datasource:
-    driver-class-name: 
