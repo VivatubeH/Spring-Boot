@@ -153,3 +153,124 @@ resources로 요청이 오면 컨트롤러 매핑이 아닌, 직접적인 파일
           ```
 
   #### 스프링 AOP 개념을 알고 있으면 좋지만, 사용할 일은 없음
+
+Spring boot와 validation API를 이용한 유효성 검증
+----------------------------------------------------
+
+1. Form 클래스를 정의한다.
+
+```java
+   public class UserRegisterForm {
+    @NotEmpty(message = "이메일은 필수입력값입니다.")
+    @Email(message = "유효한 이메일이 아닙니다.")
+    String email;
+
+    @NotEmpty
+    String password;
+
+    @NotEmpty
+    String nickname;
+
+    @NotEmpty
+    String tel;
+   }
+```
+
+2. 입력폼 화면을 요청하는 요청핸들러 메소드를 정의한다.
+
+```java
+@GetMapping("/register")
+public String form(Model model) {
+  // 입력폼에서 UserRegister 객체의 멤버변수에 저장된 값을 표시하기 때문에
+  // Model 객체 UserRegisterForm 객체를 생성해서 담는다.
+  model.addAttribute("registerForm", new UserRegisterForm());
+
+  return "register-form";
+}
+```
+
+3. 입력폼 화면을 JSP를 이용해서 작성한다.
+```jsp
+// 아래의 태그 라이브러리는 곡 필요하다.
+<!-- spring 폼 태그 라이브러리 -->
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+// registerForm이라는 이름의 객체에 담긴 값을 이용함.
+// path="입력필드명"
+<form:form method="post" action="register" modelAttribute="registerForm">
+    <div>
+          <label>이메일</label>
+          <form:input path="email" />
+            <!-- 위의 태그는 <input type="text" name="email" id="email" value="${registerForm.email}">과 같이 생성된다. -->
+          <form:errors path="email" />
+            <!-- 위의 태그는 email 입력값이 유효성을 통과하지 못했을 때 오류 메세지가 표시된다. -->
+    </div>
+    <div>
+          <label>비밀번호</label>
+          <form:password path="password" />
+          <form:errors path="password" />
+    </div>
+    <div>
+          <label>닉네임</label>
+          <form:input path="nickname" />
+          <form:errors path="nickname" />
+    </div>
+    <div>
+          <label>전화번호</label>
+          <form:input path="tel" />
+          <form:errors path="tel" />
+    </div>
+    <button type="submit">등록</button>
+</form:form>
+```
+
+4. 신규 회원정보 등록 요청을 처리하는 요청핸들러 메소드를 정의한다.
+```java
+/*
+  @Valid, @Validated
+    + 폼 입력값 유효성 검증 기능을 활성화 시키는 어노테이션이다.
+    + @Valid는 Java Validation API의 어노테이션이고, @Validated는 Spring의 어노테이션이다.
+  @ModelAttribute
+    + 이 어노테이션이 붙으면 해당 값 혹은 객체는 Model 객체에 지정된 이름으로 저장된다.
+    + 이름을 생략하거나 이 어노테이션을 생략하면 변수명과 동일한 이름으로 Model 객체에 저장된다.
+    + 아래의 코드에서 @ModelAttribute("registerForm")을 사용한 이유는 유효성 검증을 통과하지 못해서 다시 입력폼으로 내부이동했을 때,
+      입력폼에 값을 출력해야 하는데,
+      2번 항목에서 model.addAttribute("registerForm", new UserRegisterForm()); 수행문을 실행해서 Model 객체에 UserRegisterForm 객체를 저장하고
+      3번 항목에서 <form:form modelAttribute="registerForm">으로 적어서 값을 표시할 객체를 "registerForm"이라는 이름으로 찾고 있기 때문이다.
+    Model 객체에 저장하는 이름을 "registerForm"으로 지정해야 한다.
+*/
+@PostMapping("/register")
+public String register(@Valid @ModelAttribute("registerForm") UserRegisterForm form, BindingResult errors) {
+    if (errosr.hasErrors()) {
+       return "register-form"; // 유효성 검증을 통과하지 못했기 때문에 입력폼 jsp로 내부이동시킨다.
+    }
+  }
+```
+
+### BindingResult 객체
+  + @Valid 어노테이션으로 입력값 검증을 수행하고, 검증결과를 BindingResult 객체에 담기 때문에
+  + 검증결과를 전달받기 위해서 BindingResult 타입의 객체를 선언하는 것이다.
+  + 주요 API
+    - boolean hasErrors() : 유효성체크를 통과하지 못한 항목이 하나라도 있으면 true를 반환한다.
+    - void rejectValue(String fieldName, String errorCode, String defaultValue)
+      : 개발자가 추가적인 유효성 검증을 실시하고, 유효성 검증을 통과하지 못했을 때 위의 메소드를 실행해서 BindingResult에 FieldError를 추가한다.
+        - fieldName : 입력필드의 이름
+        - errorCode : 오류메세지를 별도의 properties 파일로 정의했을 때 코드=오류메시지와 같은 형식으로 적는다. [목적 국제화 처리]
+      ```
+      // 에러 코드가 존재하는 이유
+      messages.properties
+      error.register.email=required email
+
+      messages_en.properties
+      error.register.email=required email
+
+      messages_ko.properties
+      error.register.email=이메일은 필수입력값입니다.
+
+      messages_ja.properties
+      error.register.email=일본어로 ㅌㅌㅌㅌㅌ
+
+      messages_cn.properties
+      error.register.email=중국어로 ㅌㅌㅌㅌㅌ 
+      ```
+        - defaultMessage : 기본 오류 메세지
