@@ -294,3 +294,8 @@ public String register(@Valid @ModelAttribute("registerForm") UserRegisterForm f
       error.register.email=중국어로 ㅌㅌㅌㅌㅌ 
       ```
         - defaultMessage : 기본 오류 메세지
+
+## 입력값 유효성 검사
+1. 어노테이션
+2. 사용자가 입력한 입력값을 검증
+3. 예외클래스 사용
