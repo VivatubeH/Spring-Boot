@@ -225,6 +225,12 @@ public String form(Model model) {
 ```
 
 4. 신규 회원정보 등록 요청을 처리하는 요청핸들러 메소드를 정의한다.
+   + Java Validation API 기반의 유효성 검증을 실행하게 한다.
+   + 유효성 검증 통과여부를 체크한다.
+   + 개발자가 추가적인 유효성 검증을 실시한다.
+   + 유효성 검증을 통과했다면 업무로직 메소드를 호출해서 업무로직을 실행시킨다.
+   + 뷰이름(재요청할 URL)을 응답으로 보낸다.
+     
 ```java
 /*
   @Valid, @Validated
@@ -241,9 +247,23 @@ public String form(Model model) {
 */
 @PostMapping("/register")
 public String register(@Valid @ModelAttribute("registerForm") UserRegisterForm form, BindingResult errors) {
+    // 유효성 검증 통과여부를 체크한다.
     if (errosr.hasErrors()) {
        return "register-form"; // 유효성 검증을 통과하지 못했기 때문에 입력폼 jsp로 내부이동시킨다.
     }
+
+    // 비밀번호와 비밀번호확인 값이 일치하는지 체크한다.
+    if(!form.getPassword().equals(form.getPasswordConfirm())){
+    // 유효성 검증 실패정보를 BindingResult 객체에 추가한다.
+    // BindingResult는 단순히 검증결과 정보만 담는 것이다.
+      errors.rejectValue("passwordConfirm", null, "비밀번호가 일치하지 않습니다.");
+      return "register-form";
+    }
+
+    // 업무로직 메소드를 호출한다.
+    userService.addNewUser(form);
+
+    return "redirect:/";
   }
 ```
 
