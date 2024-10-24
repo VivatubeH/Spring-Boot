@@ -260,9 +260,14 @@ public String register(@Valid @ModelAttribute("registerForm") UserRegisterForm f
       return "register-form";
     }
 
+    try {
     // 업무로직 메소드를 호출한다.
     userService.addNewUser(form);
-
+    } catch (AlreadyUsedEmailException ex) {
+      // 유효성 검증 실패정보를 BindingResult 객체에 추가한다.
+      errors.rejectValue("email", null, "이미 사용중인 이메일입니다.");
+      return "register-form";
+    }
     return "redirect:/";
   }
 ```
@@ -295,6 +300,39 @@ public String register(@Valid @ModelAttribute("registerForm") UserRegisterForm f
       ```
         - defaultMessage : 기본 오류 메세지
 
+5. 신규 회원가입 업무로직 작성하기
+```java
+@Service
+public class UserService {
+  @Autowired
+  private UserMapper userMapper;
+
+  // 신규 회원가입 업무로직
+  // 가능하면 성공, 실패 여부는 예외 발생 유무로 판단할 수 있어야 함.
+  public void addNewUser(UserRegisterForm form) {
+    // 업무로직 수행에서 가장 먼저 수행할 작업은 나쁜 상황을 먼저 체크하는 것이다.
+    // 업무로직에 위배되는 상황이 발생하면 더이상 불필요한 업무로직을 실행하지 않도록
+    // 예외를 발생시킨다.
+    // 이메일 중복 여부를 체크한다. 
+    User savedUser = userMapper.getUserByEmail(form.getEmail());
+    if (savedUser != null) {
+      throw new AlreadyUsedEmailException(form.getEmail());
+
+    // 나쁜 상황에 빠지지 않는 경우에만 이 부분의 코드가 실행된다.
+    // UserRegisterForm 객체의 값을 옮겨담을 User 객체생성
+    User user = new User();
+    BeanUtils.copyProperties(form, user);
+    // database access 작업 수행해서 User 정보를 테이블에 저장시킨다.
+    userMapper.insertUser(user);
+
+    // 신규 사용자는 항상 일반사용자 권한을 가지기 때문에
+    // 새로 사용자가 등록되면 해당 사용자에 대해서 일반 사용자 권한을 추가한다.
+    UserRole userRole = new UserRole(user.getNo(), "ROLE_USER");
+    userMapper.insertUserRole(userRole);
+    }
+  }
+}
+```
 ## 입력값 유효성 검사
 1. 어노테이션
 2. 사용자가 입력한 입력값을 검증
