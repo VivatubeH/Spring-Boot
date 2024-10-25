@@ -86,14 +86,25 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		http
-	        .csrf(csrf -> csrf.disable())
+			// 사이트간 요청변조를 방지하는 csrf 토큰 사용을 비활성화한다.
+			.csrf(csrf -> csrf
+					.disable())
+			// 접근 인가정책을 설정한다.
 	        .authorizeHttpRequests(auth -> auth
-	              .requestMatchers("/", "/register", "/login").permitAll()
-	              .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+	        	  // /home, /register, /login, /product/** 요청은 항상 접근허용
+	              .requestMatchers("/home").permitAll()
+	              .requestMatchers("/register").permitAll()
+	              .requestMatchers("/login").permitAll()
+	              .requestMatchers("/product/**").permitAll()
+	              // /my/** 요청은 USER, MANAGER, ADMIN 권한을 가지고 있을 때만 접근허용
+	              .requestMatchers("/my/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+	              // /admin/** 요청은 ADMIN 권한을 가지고 있을때만 접근허용
 	              .requestMatchers("/admin/**").hasRole("ADMIN")
-	              .anyRequest().authenticated()
-	        );
+	              // 위에서 설정한 요청외의 모든 요청은 인증된 사용자만 접근허용
+	              .anyRequest().authenticated());
+		
 		return http.build();
 	}
 }
 ```
+
