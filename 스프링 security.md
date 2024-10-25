@@ -95,8 +95,7 @@ public class SecurityConfig {
 	              .requestMatchers("/my/**").hasAnyRole("USER", "MANAGER", "ADMIN")
 	              // /admin/** 요청은 ADMIN 권한을 가지고 있을때만 접근허용
 	              .requestMatchers("/admin/**").hasRole("ADMIN")
-	              // 위에서 설정한 요청외의 모든 요청은 인증된 사용자만 접근허용
-	              .anyRequest().authenticated());
+	           	  .anyRequest().permitAll());
 		
 		return http.build();
 	}
