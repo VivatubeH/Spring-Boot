@@ -222,6 +222,12 @@ public class CustomUserDetails implements UserDetails{
 		return password;
 	}
 
+```
+
+스프링 시큐리티의 인증절차 세부 사항
+--------------------------------------------------
+
+![image](https://github.com/user-attachments/assets/72a9bcf5-f6ec-4675-86d9-ae3b9eb3d76d)
 
 }
 ```
