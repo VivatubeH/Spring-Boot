@@ -91,11 +91,6 @@ public class SecurityConfig {
 					.disable())
 			// 접근 인가정책을 설정한다.
 	        .authorizeHttpRequests(auth -> auth
-	        	  // /home, /register, /login, /product/** 요청은 항상 접근허용
-	              .requestMatchers("/home").permitAll()
-	              .requestMatchers("/register").permitAll()
-	              .requestMatchers("/login").permitAll()
-	              .requestMatchers("/product/**").permitAll()
 	              // /my/** 요청은 USER, MANAGER, ADMIN 권한을 가지고 있을 때만 접근허용
 	              .requestMatchers("/my/**").hasAnyRole("USER", "MANAGER", "ADMIN")
 	              // /admin/** 요청은 ADMIN 권한을 가지고 있을때만 접근허용
