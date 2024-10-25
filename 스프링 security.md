@@ -186,3 +186,44 @@ public String register(@Valid @ModelAttribute("registerForm") UserRegisterForm f
 			// 로그인 실패시 이동할 URL을 지정한다.
 			.failureUrl("/login?error"));	
 ```
+
+#### UserDetails를 구현한 CustomerUserDetails 클래스 생성 후 메서드 구현하기
+#### 스프링 시큐리티에게 정보를 제공하기 위한 객체
+```java
+package com.example.demo.security;
+
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class CustomUserDetails implements UserDetails{
+
+	private String email; // username에 해당하는 값이다.
+	private String password; // 비밀번호에 해당하는 값이다.
+	private Collection<? extends GrantedAuthority> authorities;
+	// ?는 GrantedAuthority이거나 자손이거나
+	
+	// 사용자가 보유한 접근권한 정보를 반환한다.
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return authorities;
+	}
+
+	// 사용자를 고유하게 식별하는 정보(사용자아이디, 사용자번호, 이메일, 사원번호 등) 반환한다.
+	@Override
+	public String getUsername() {
+		return email; // 우리 사이트에서는 이메일이 사용자를 식별하는 정보다.
+	}
+
+	// 사용자의 비밀번호를 반환한다.
+	@Override
+	public String getPassword() {
+		return password;
+	}
+
+
+}
+```
+
+
