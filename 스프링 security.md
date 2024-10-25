@@ -159,3 +159,30 @@ public String register(@Valid @ModelAttribute("registerForm") UserRegisterForm f
 	
 	return "redirect:/home";
 ```
+
+#### login-form 커스터마이징
+```jsp
+<div class="mb-3">
+<label class="form-label">이메일</label>
+<input type="text" class="form-control" id="user-email" name="email" />
+</div>
+<div class="mb-3">
+<label class="form-label">비밀번호</label>
+<input type="password" class="form-control" id="user-password" name="pwd" />
+</div>
+```
+
+#### 스프링에 커스터마이징 알려주기
+```java
+.formLogin(formLogin -> formLogin
+			// 로그인 폼을 요청하는 URL을 지정한다.
+			.loginPage("/login")
+			.usernameParameter("email")
+			.passwordParameter("pwd")
+			// 로그인 요청을 처리하는 URL을 지정한다.
+			.loginProcessingUrl("/login")
+			// 로그인 성공시 이동할 URL을 지정한다.
+			.defaultSuccessUrl("/home")
+			// 로그인 실패시 이동할 URL을 지정한다.
+			.failureUrl("/login?error"));	
+```
