@@ -2,6 +2,12 @@
 server:
   port: 80
 
+### 로그출력레벨 설정하기
+loging:
+  level:
+    '[com.example.demo.mapper]': trace
+    '[com.example.demo.service]': debug
+
 spring:
 ### 애플리케이션 이름을 정의한다.
   application:

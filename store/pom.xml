@@ -31,6 +31,16 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- Spring security 의존성 추가 -->
+		<dependency>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!-- Spring security를 지원하는 JSP 태그라이브러리 의존성 추가-->
+		<dependency>
+         <groupId>org.springframework.security</groupId>
+          <artifactId>spring-security-taglibs</artifactId>
+      	</dependency>
 		<!--
          객체의 값을 다른 객체에 복사해주는 modelmapper 의존성 추가
       	-->
