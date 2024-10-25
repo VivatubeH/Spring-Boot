@@ -103,3 +103,59 @@ public class SecurityConfig {
 }
 ```
 
+### 기본적인 로그인 절차
+1. 로그인 화면 요청
+2. 로그인 요청 처리 ( 아이디/ 비밀번호 체크, 세션에 사용자 정보 저장 ) -> 이 단계를 스프링 시큐리티가 대신 해준다.
+
+#### SecurityConfig 클래스에 비밀번호 암호화하는 인코더 추가
+```java
+// 비밀번호를 암호화하는 비밀번호 인코더를 스프링의 빈으로 등록시킨다.
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+```
+
+#### UserService에 인코더 조립시키기
+```java
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+```
+
+#### UserService의 addNewUser 메소드에 암호화 추가시키기
+```java
+// 비밀번호를 암호화한다.
+String encodedPassword = passwordEncoder.encode(user.getPassword());
+user.setPassword(encodedPassword);		
+```
+
+#### HomeController 로그인에 redirect 추가하기
+```java
+@PostMapping("/register")
+public String register(@Valid @ModelAttribute("registerForm") UserRegisterForm form, BindingResult errors) {
+	
+	// 유효성 검증을 통과하지 못하면 register-form.jsp로 내부이동시킨다.
+	if (errors.hasErrors()) {
+		return "register-form";
+	}
+	
+	// 추가적인 유효성 검증 실시하기
+	if (!form.getPassword().equals(form.getPasswordConfirm())) {
+		errors.rejectValue("passwordConfirm", null, "비밀번호가 일치하지 않습니다.");
+		return "register-form";
+	}
+	
+	try {
+		// 업무로직 메소드를 호출한다.
+		userService.addNewUser(form);
+		
+	} catch (AlreadyUserEmailException ex) { 
+		// 아주 특별한 예외는 컨트롤러에서 처리한다. ( 되돌아가야 하므로 )
+		// 구체적인 예외를 구분하려면 개별 예외가 달라야함.
+		// 이메일 중복으로 폼 입력값이 유효하지 않는 경우
+		errors.rejectValue("email", null, "이미 사용중인 이메일입니다.");
+		return "register-form";
+	}
+	
+	return "redirect:/home";
+```
