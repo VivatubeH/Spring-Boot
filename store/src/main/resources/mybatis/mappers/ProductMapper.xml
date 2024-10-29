@@ -1,64 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.ProductMapper">
+
 	<!-- 
-		int getTotalRows(@Param("condition") Map<String, Object> condition);
-	-->
+		int getTotalRows(@Param("condition") 
+						 Map<String, Object> condition);
+	 -->
 	<select id="getTotalRows" resultType="int">
-		select 
-			count(*) cnt
+		select
+			 count(*) cnt
 		from 
 			spring_products
-		<where>
+		<where>		
 			<if test="condition.opt != null">
-				<choose>
+				<choose>	
 					<when test="condition.opt == 'name'">
-						product_name like '%' || #{condition.value} || '%'
+						 product_name like '%' || #{condition.value} || '%'
 					</when>
 					<when test="condition.opt == 'maker'">
-						product_maker like '%' || #{condition.value} || '%'
+						 product_maker like '%' || #{condition.value} || '%'
 					</when>
-					<when test="condition.opt == 'minPrice'">
-						product_price &gt;= #{condition.value}
+					<when test="condition.opt == 'minPirce'">
+						 product_price &gt;= #{condition.value} 
 					</when>
-					<!-- 여는 태그 <는 xml 문서내에서 사용 못함.. -->
-					<when test="condition.opt == 'maxPrice'"> 
-						product_price &lt;= #{condition.value}
+					<when test="condition.opt == 'maxPrice'">
+						 product_price &lt;= #{condition.value}
 					</when>
 				</choose>
 			</if>
 		</where>
 	</select>
-	
+
 	<!-- 
-		List<Product> getProducts(@Param("condition") Map<String, Object> condition);
-	-->
-		<select id="getProducts" resultType="Product">
-			select 
-				*
-			from (
-					select 
-						<choose>
-							<when test="condition.sort == 'date'">
-								row_number() over (order by P.product_no desc) rn
-							</when>
-							<when test="condition.sort == 'name'">
-								row_number() over (order by P.product_name asc) rn
-							</when>
-							<when test="condition.sort == 'price'">
-								row_number() over (order by P.product_price asc, P.product_no desc) rn
-							</when>
-						</choose>
-						, P.product_no 				as no
-						, P.product_name 			as name
-						, P.product_price 			as price
-						, P.product_discount_price 	as discountPrice
-						, C.category_no				as "category.no"
-						, C.category_name			as "category.name"
-					from
-						spring_products P, spring_categories C
-					where
-						P.category_no = C.category_no
+		List<Product> getProducts(@Param("condition") 
+								  Map<String, Object> condition);
+	 -->
+	 
+	 <select id="getProducts" resultType="Product">
+	 	select 
+	 		*
+	 	from (
+			 	select
+			 		<choose>
+			 			<when test="condition.sort== 'date'">
+					 		row_number() over (order by P.product_no desc) rn
+			 			</when>
+			 			<when test="condition.sort== 'name'">
+					 		row_number() over (order by P.product_name desc) rn
+			 			</when>
+			 			<when test="condition.sort== 'price'">
+					 		row_number() over (order by P.product_price desc) rn
+			 			</when>
+			 		</choose>
+			 		, P.product_no  			as no
+			 		, P.product_name		 	as name
+			 		, P.product_price 			as price
+			 		, P.product_discount_price 	as discountPrice
+			 		, C.category_no				as "category.no"
+			 		, C.category_name 			as "category.name"
+		 		from
+		 			spring_products P, spring_categories C
+				where
+					P.category_no = C.category_no
 					<if test="condition.opt != null">
 						<choose>
 							<when test="condition.opt == 'name'">
@@ -68,23 +71,20 @@
 								and P.product_maker like '%' || #{condition.value} || '%'
 							</when>
 							<when test="condition.opt == 'minPrice'">
-								and P.product_price &gt;= #{condition.value}
+								and P.product_price &gt;= #{condition.value} 
 							</when>
-							<!-- 여는 태그 <는 xml 문서내에서 사용 못함.. -->
-							<when test="condition.opt == 'maxPrice'"> 
+							<when test="condition.opt == 'maxPrice'">
 								and P.product_price &lt;= #{condition.value}
 							</when>
 						</choose>
 					</if>
-				)
-				where 
-					rn between #{condition.begin} and #{condition.end}
-		</select>
-	
-	<!-- 
-		Product getProductByNo(@Param("no") int no);
-	-->
-	<select id="getProductByNo" resultType="Product">
-	
-	</select>
+			)
+		where 
+			rn between #{condition.begin} and #{condition.end}
+	 </select>
+	 
+	 <!--  Product getProductByNo(@Param("no") int no); -->
+	 <select id="getProductByNo" resultType="Product">
+	 
+	 </select>
 </mapper>

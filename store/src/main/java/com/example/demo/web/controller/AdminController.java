@@ -16,12 +16,11 @@ public class AdminController {
 	private UserService userService;
 	
 	@GetMapping("/user/addrole")
-	public String addRole(@RequestParam int userNo, @RequestParam String roleName) {
-		
+	public String addRole(
+	@RequestParam int userNo,
+	@RequestParam String roleName) {
 		userService.addUserRole(userNo, roleName);
 		
-		return "redirect:/admin/user/detail?no=" + userNo;
+		return "redirect:/admin/user/detail?no="+ userNo;
 	}
-	
-	
 }

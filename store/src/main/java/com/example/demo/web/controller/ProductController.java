@@ -1,5 +1,6 @@
 package com.example.demo.web.controller;
 
+import java.lang.module.ModuleDescriptor.Requires;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,26 +25,25 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping("/list")
-	public String list(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-					   @RequestParam(name = "rows", required = false, defaultValue = "10") int rows,
-					   @RequestParam(name = "sort", required = false, defaultValue = "date") String sort,
-					   @RequestParam(name = "opt", required = false) String opt,
-					   @RequestParam(name = "value", required = false) String value,
-					   Model model) {
+	public String list(@RequestParam(name= "page", required = false, defaultValue ="1") int page,
+	@RequestParam(name="rows", required = false, defaultValue = "10") int rows,
+	@RequestParam(name = "sort", required = false, defaultValue="date") String sort,
+	@RequestParam(name = "opt", required = false) String opt,
+	@RequestParam(name = "value", required = false) String value,
+	Model model) {
 		
-		Map<String, Object> condition = new HashMap<>();
-		condition.put("page", page);
-		condition.put("rows", rows);
-		condition.put("sort", sort);
-		if(StringUtils.hasText(value)) { // null이 아니고 값이 있는 경우에만
-			condition.put("opt", opt);
-			condition.put("value", value);
-		}
+	Map<String, Object> condition = new HashMap<>();
+	condition.put("page", page);
+	condition.put("rows", rows);
+	condition.put("sort", sort);
+	if(StringUtils.hasText(value)) {
+		condition.put("opt", opt);
+		condition.put("value", value);
+	}
 		
 		ListDto<Product> dto = productService.getAllProducts(condition);
-		model.addAttribute("products", dto.getData());
+		model.addAttribute("products",dto.getData());
 		model.addAttribute("paging", dto.getPaging());
-		
 		return "product/list";
 	}
 	

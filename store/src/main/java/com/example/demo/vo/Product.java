@@ -19,7 +19,7 @@ import lombok.ToString;
 @Builder
 @Alias("Product")
 public class Product {
-
+	
 	private int no;
 	private String name;
 	private String maker;
@@ -31,4 +31,5 @@ public class Product {
 	private Date createdDate;
 	private Date updatedDate;
 	private Category category;
+	
 }

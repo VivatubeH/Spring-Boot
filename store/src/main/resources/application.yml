@@ -2,12 +2,10 @@
 server:
   port: 80
 
-### 로그출력레벨 설정하기
-loging:
+### 로그출력레벨 성장하기
+logging:
   level:
     '[com.example.demo.mapper]': trace
-    '[com.example.demo.service]': debug
-
 spring:
 ### 애플리케이션 이름을 정의한다.
   application:
@@ -32,3 +30,12 @@ mybatis:
   configuration:    # 기타 설정정보를 정의한다.
     jdbc-type-for-null: NULL
     log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+
+
+### 첨부파일 업로드 폴더
+upload:
+  directory:
+   board: "c:/files/board"
+   
+
+
