@@ -85,6 +85,23 @@
 	 
 	 <!--  Product getProductByNo(@Param("no") int no); -->
 	 <select id="getProductByNo" resultType="Product">
-	 
+	 	select
+	 		P.product_no 				as no
+	 		, P.product_name			as name
+	 		, P.product_maker			as maker
+	 		, P.product_price			as price
+	 		, P.product_discount_price	as discountPrice
+	 		, P.product_stock			as stock
+	 		, P.product_review_cnt		as reviewCnt
+	 		, P.product_sell			as sell
+	 		, P.product_created_date	as createdDate
+	 		, P.product_updated_date	as updatedDate
+	 		, C.category_no				as "category.no"
+	 		, C.category_name			as "category.name"
+	 	from
+	 		spring_products P, spring_categories C
+	 	where
+	 		P.category_no = C.category_no
+	 		and P.product_no = #{no}
 	 </select>
 </mapper>

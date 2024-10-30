@@ -51,6 +51,11 @@ public class ProductService {
 		ListDto<Product> dto = new ListDto<>(products, pagination);
 		return dto;
 	}
+
+	public Product getProduct(int no) {
+		Product product = productMapper.getProductByNo(no);
+		return product;
+	}
 	
 	
 }	

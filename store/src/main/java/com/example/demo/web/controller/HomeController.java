@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dto.UserRegisterForm;
 import com.example.demo.exception.AlreadyUsedEmailException;
@@ -65,5 +66,13 @@ public class HomeController {
 		}
 		
 		return "redirect:/home";
+		}
+		
+		@GetMapping("/check-email")
+		@ResponseBody
+		public String emailCheck(String email) {
+			System.out.println("전달받은 email: " + email);
+			boolean isExists = userService.isExistEmail(email);
+			return isExists ? "exists" : "none";
+		}
 	}
-}

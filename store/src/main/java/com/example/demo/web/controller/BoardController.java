@@ -85,12 +85,17 @@ public class BoardController {
 	
 	@GetMapping("/filedown")
 	public ModelAndView download(int no) {
+		
+		Board board = boardService.getBoardDetail(no);
+		
 		ModelAndView mav = new ModelAndView();
 		// 응답을 제공할 View를 직접 설정한다.
 		mav.setView(fileDownloadView);
 		// 응답에 필요한 정보를 저장한다. Model로 저장된다.
 		mav.addObject("directory", saveDirectory);
-		mav.addObject("filename", "a.zip");
+		mav.addObject("filename", board.getFilename());
+		mav.addObject("originalFilename", board.getOriginalFilename());
+		
 		return mav;
 	}
 	/*
